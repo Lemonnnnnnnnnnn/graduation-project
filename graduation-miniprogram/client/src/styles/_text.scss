@@ -1,0 +1,132 @@
+@import "overrides";
+
+text {
+  color: #748a9d default;
+}
+
+.text {
+  &-brand {
+    color: #748a9d !important;
+  }
+  &-center {
+    text-align: center !important;
+  }
+
+  &-through {
+    text-decoration: line-through !important;
+  }
+
+  &-muted {
+    color: $color-grey-2 !important;
+  }
+
+  &-white {
+    color: $color-white !important;
+  }
+
+  &-yellow {
+    color: $color-yellow-0 !important;
+  }
+
+  &-secondary {
+    color: #888888 !important;
+  }
+
+  &-gray {
+    color: #5d5d5d !important ;
+  }
+
+  &-gray--1 {
+    color: #dfdfdf !important;
+  }
+  &-white {
+    color: #ffffff;
+  }
+
+  &-gray--2 {
+    color: #353535 !important;
+  }
+
+  &-red {
+    color: #ff6161 !important;
+  }
+  &-red--1 {
+    color: #ff5b1d !important;
+    text-shadow: 0 0 6px * $hd rgba(255, 102, 33, 0.49);
+  }
+
+  &-orange {
+    color: #ff6b29 !important;
+  }
+
+  &-orange--1 {
+    color: rgba(255, 112, 58, 1) !important;
+  }
+
+  &-pink {
+    color: #f89494 !important;
+  }
+
+  &-black {
+    color: #000000 !important;
+  }
+
+  &-disturtion {
+    color: #ff8829 !important;
+  }
+
+  // 字体粗细
+  &-bold {
+    font-weight: bold;
+  }
+
+  // 字体大小
+  &-super {
+    line-height: $font-size-xxl * 1.5;
+    font-size: $font-size-xxl;
+  }
+
+  &-huge {
+    line-height: $font-size-xl * 1.5;
+    font-size: $font-size-xl;
+  }
+
+  &-large {
+    line-height: $font-size-lg * 1.5;
+    font-size: $font-size-lg;
+  }
+
+  &-normal {
+    line-height: $font-size-base * 1.5;
+    font-size: $font-size-base;
+  }
+
+  &-small {
+    line-height: $font-size-sm * 1.5;
+    font-size: $font-size-sm;
+  }
+
+  &-mini {
+    line-height: $font-size-xs * 1.5;
+    font-size: $font-size-xs;
+  }
+  &-indent {
+    text-indent: 2em;
+  }
+  &-wrap {
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+  &-line-through {
+    text-decoration: line-through;
+  }
+  &-italic {
+    font-style: italic;
+  }
+}
+//文字超出省略
+.overtext {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

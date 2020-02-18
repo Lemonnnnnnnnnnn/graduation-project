@@ -1,0 +1,29 @@
+
+.decorate {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  right: 0;
+
+  height: 350px;
+  width: 100%;
+  background: #fff;
+
+  &--shadow--gray{
+    box-shadow: 0 5px 30px #707070;
+  }
+
+  &--shadow--gray--1{
+    box-shadow: 0 5px 30px #afafaf;
+  }
+
+  &--border--radius--circle{
+    border-radius: 100% 100% 100% 100% / 0% 0% 50% 50%;
+  }
+
+  &--border--radius--normal{
+    border-radius: 100% 100% 100% 100% / 0% 0% 25% 25%;
+  }
+
+}

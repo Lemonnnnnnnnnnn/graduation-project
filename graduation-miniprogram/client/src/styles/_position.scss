@@ -1,0 +1,15 @@
+@import "overrides";
+
+@each $position in $positions {
+  .position-#{$position} {
+    position: $position !important;
+  }
+}
+
+@each $display in $displays {
+  .display-#{$display} {
+    display: $display;
+  }
+}
+
+

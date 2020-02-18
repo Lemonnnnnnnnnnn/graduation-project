@@ -1,0 +1,26 @@
+
+//单位元素垂直居中
+.page-middile {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 继承父元素高度
+.inherit-Height {
+  height: 100%;
+}
+// 继承父元素宽度
+.inherit-Width {
+  width: 100%;
+}
+
+.width-auto {
+  width: auto;
+}
+
+.wrap-Style {
+  overflow: hidden;
+  position: relative;
+}

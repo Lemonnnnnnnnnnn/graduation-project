@@ -1,0 +1,128 @@
+<template>
+  <el-container>
+    <el-header
+      style="text-align: right; font-size: 16px"
+      v-loading.fullscreen.lock="fullscreenLoading"
+    >
+      <span>菜单</span>
+    </el-header>
+
+    <el-main>
+      <el-card v-for="o in this.DishesArr" :key="o._id" class="box-card">
+        <el-row>
+          <el-col :span="8">
+            <el-tag type="info" style="font-size:1.5rem ">{{o.tableID}}桌</el-tag>
+          </el-col>
+          <el-col :span="8">
+            <el-tag type="success" style="font-size:1.5rem ">下单时间：{{o.timePart}}</el-tag>
+          </el-col>
+
+          <el-col :span="8">
+            <el-button type="primary" @click="onCompleteTable(o._id)">整桌订单已完成</el-button>
+          </el-col>
+        </el-row>
+
+        <el-table
+          :data="o.list"
+          v-loading="loading"
+          element-loading-text="正在提交订单"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
+        >
+          <el-table-column prop="dishname" label="菜名"></el-table-column>
+          <el-table-column prop="Spicy.name" label="辣度"></el-table-column>
+          <el-table-column prop="format.name" label="尺寸"></el-table-column>
+          <el-table-column prop="num" label="数量"></el-table-column>
+          <el-table-column prop="sum" label="总价"></el-table-column>
+          <el-table-column prop="dishprice" label="单价"></el-table-column>
+          <el-table-column prop="remark" label="备注"></el-table-column>
+          <el-table-column fixed="right" label="操作">
+            <template slot-scope="scope">
+              <el-button
+                type="danger"
+                size="small"
+                @click="onComplete(o._id,scope.row.dishesId)"
+              >已完成</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-card>
+    </el-main>
+  </el-container>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  name: "DishesList",
+  data() {
+    return {
+      DishesArr: [],
+      loading: false,
+      fullscreenLoading: false
+    };
+  },
+  created() {
+    this.getDishesArr();
+    console.log("初次获取菜单");
+
+    // 每三十秒获取一次菜单
+    // setInterval(() => {
+    //   this.getDishesArr();
+    //   console.log("获取最新菜单");
+    // }, 30000);
+  },
+  methods: {
+    async getDishesArr() {
+      this.fullscreenLoading = true;
+      axios
+        .get("http://localhost:3001/dishes/tableList")
+        .then(({ data: { data } }) => {
+          this.DishesArr = data;
+          this.fullscreenLoading = false;
+        });
+    },
+
+    onComplete(id, itemId) {
+      this.loading = true;
+      axios
+        .get(
+          `http://localhost:3001/dishes/completeOne?id=${id}&itemId=${itemId}`
+        )
+        .then(res => {
+          console.log(res);
+
+          this.$message("订单已完成！");
+          this.getDishesArr();
+          this.loading = false;
+        });
+    },
+    onCompleteTable(id) {
+      this.loading = true;
+      axios.get(`http://localhost:3001/dishes/complete?id=${id}`).then(res => {
+        console.log(res);
+
+        this.$message("订单已完成！");
+        this.getDishesArr();
+        this.loading = false;
+      });
+    }
+  }
+};
+</script>
+
+<style>
+.el-header {
+  background-color: #b3c0d1;
+  color: #333;
+  line-height: 60px;
+}
+
+.el-aside {
+  color: #333;
+}
+.cell {
+  text-align: center;
+}
+</style>

@@ -1,0 +1,131 @@
+@import "overrides";
+
+$radius-range: (
+  mini: $border-radius-mini,
+  small: $border-radius-small,
+  normal: $border-radius-normal,
+  large: $border-radius-large,
+  huge: $border-radius-huge,
+  super: $border-radius-super
+);
+
+$padding-range: (
+  mini: (
+    2px * $hd 6px * $hd
+  ),
+  small: (
+    4px * $hd 12px * $hd
+  ),
+  normal: (
+    6px * $hd 18px * $hd
+  ),
+  large : (
+    8px * $hd 24px * $hd
+  ),
+  huge : (
+    10px * $hd 30px * $hd
+  ),
+  super : (
+    12px * $hd 36px * $hd
+  )
+);
+
+$border-range: (
+  "none": none,
+  "gray": (
+    1px solid #eaebefff
+  ),
+  "orange": (
+    1px solid #ffb468
+  ),
+  "yellow": (
+    1px solid $color-yellow-0
+  )
+);
+
+$boxShadow-range: (
+  "none": none,
+  "orangeRed": (
+    0px 0px 6px * $hd rgba(255, 160, 52, 0.62)
+  ),
+  "darkYellow": (
+    0 1px * $hd 6px * $hd rgba(255, 201, 25, 0.43)
+  )
+);
+
+$background-range: (
+  "yellow": (
+    $color-yellow-0
+  ),
+  "yellow-1": (
+    #ffc919
+  ),
+  "black": (
+    #353535
+  ),
+  "pink": (
+    #ff6161
+  ),
+  "pink-1":(
+    #FF773E
+  ),
+  "white": (
+    #fff
+  ),
+  "grey": (
+    #888888
+  ),
+  "grey-1": (
+    #d4d4d4
+  ),
+  "grey-2": (
+    #f8f8f8
+  ),
+  "grey-3": (
+    #f3f4f8
+  ),
+  "grey-4": (
+    #FFFAE9
+  ),
+  "lightPink": (
+    #ffefef
+  ),
+  "lightYellow": (
+    rgba(255, 242, 223, 1)
+  ),
+  "lightBlue": (
+    #ecfbff
+  )
+);
+
+.tag {
+  @each $name, $radius in $radius-range {
+    &--border--radius--#{$name} {
+      border-radius: $radius !important;
+    }
+  }
+
+  @each $name, $padding in $padding-range {
+    &--padding--#{$name} {
+      padding: $padding !important;
+    }
+  }
+
+  @each $name, $border in $border-range {
+    &--border--#{$name} {
+      border: $border !important;
+    }
+  }
+
+  @each $name, $shadows in $boxShadow-range {
+    &--shadow--#{$name} {
+      box-shadow: $shadows !important;
+    }
+  }
+
+  @each $name, $backgrounds in $background-range {
+    &--background--#{$name} {
+      background: $backgrounds !important;
+    }
+  }
+}

@@ -1,0 +1,2 @@
+export const TYPE_ADD_DISHES = 'TYPE_ADD_DISHES'
+export const TYPE_CLEAR_CAR = 'TYPE_CLEAR_CAR'

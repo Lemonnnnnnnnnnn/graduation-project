@@ -1,0 +1,21 @@
+{
+  "name": "graduation-node",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "gulp"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "browser-sync": "^2.26.7",
+    "cookie-parser": "~1.4.4",
+    "dayjs": "^1.8.20",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "gulp-nodemon": "^2.4.2",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11",
+    "wx-server-sdk": "^1.8.0"
+  }
+}

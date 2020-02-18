@@ -1,0 +1,133 @@
+@each $prop, $abbrev in (margin: m, padding: p) {
+  @each $size, $length in $spacers {
+    .#{$abbrev}-#{$size} {
+      #{$prop}: $length !important;
+    }
+
+    .#{$abbrev}t-#{$size},
+    .#{$abbrev}y-#{$size} {
+      #{$prop}-top: $length !important;
+    }
+
+    .#{$abbrev}r-#{$size},
+    .#{$abbrev}x-#{$size} {
+      #{$prop}-right: $length !important;
+    }
+
+    .#{$abbrev}b-#{$size},
+    .#{$abbrev}y-#{$size} {
+      #{$prop}-bottom: $length !important;
+    }
+
+    .#{$abbrev}l-#{$size},
+    .#{$abbrev}x-#{$size} {
+      #{$prop}-left: $length !important;
+    }
+
+    .#{$abbrev}t-#{$size},
+    .#{$abbrev}y-#{$size} {
+      #{$prop}-top: $length !important;
+    }
+
+    // 负数
+    .minus-#{$abbrev}-#{$size} {
+      #{$prop}: -$length !important;
+    }
+
+    .minus-#{$abbrev}t-#{$size},
+    .minus-#{$abbrev}y-#{$size} {
+      #{$prop}-top: -$length !important;
+    }
+
+    .minus-#{$abbrev}r-#{$size},
+    .minus-#{$abbrev}x-#{$size} {
+      #{$prop}-right: -$length !important;
+    }
+
+    .minus-#{$abbrev}b-#{$size},
+    .minus-#{$abbrev}y-#{$size} {
+      #{$prop}-bottom: -$length !important;
+    }
+
+    .minus-#{$abbrev}l-#{$size},
+    .minus-#{$abbrev}x-#{$size} {
+      #{$prop}-left: -$length !important;
+    }
+  }
+}
+
+@each $prop, $abbrev in (margin: m, padding: p) {
+  @each $size, $length in $spacers-full {
+    .#{$abbrev}-#{$size}-full {
+      #{$prop}: $length !important;
+    }
+
+    .#{$abbrev}t-#{$size}-full,
+    .#{$abbrev}y-#{$size}-full {
+      #{$prop}-top: $length !important;
+    }
+
+    .#{$abbrev}r-#{$size}-full,
+    .#{$abbrev}x-#{$size}-full {
+      #{$prop}-right: $length !important;
+    }
+
+    .#{$abbrev}b-#{$size}-full,
+    .#{$abbrev}y-#{$size}-full {
+      #{$prop}-bottom: $length !important;
+    }
+
+    .#{$abbrev}l-#{$size}-full,
+    .#{$abbrev}x-#{$size}-full {
+      #{$prop}-left: $length !important;
+    }
+
+    .#{$abbrev}t-#{$size}-full,
+    .#{$abbrev}y-#{$size}-full {
+      #{$prop}-top: $length !important;
+    }
+
+    // 负数
+    .minus-#{$abbrev}-#{$size} {
+      #{$prop}: -$length !important;
+    }
+
+    .minus-#{$abbrev}t-#{$size},
+    .minus-#{$abbrev}y-#{$size} {
+      #{$prop}-top: -$length !important;
+    }
+
+    .minus-#{$abbrev}r-#{$size},
+    .minus-#{$abbrev}x-#{$size} {
+      #{$prop}-right: -$length !important;
+    }
+
+    .minus-#{$abbrev}b-#{$size},
+    .minus-#{$abbrev}y-#{$size} {
+      #{$prop}-bottom: -$length !important;
+    }
+
+    .minus-#{$abbrev}l-#{$size},
+    .minus-#{$abbrev}x-#{$size} {
+      #{$prop}-left: -$length !important;
+    }
+  }
+}
+
+// 行高
+@each $props, $abbrev in (line-height: lh) {
+  @each $size, $length in $spacers-full {
+    .#{$abbrev}-#{$size} {
+      #{$props}: $length !important;
+    }
+  }
+}
+
+// 高
+@each $props, $abbrev in (height: h) {
+  @each $size, $length in $spacers-full {
+    .#{$abbrev}-#{$size} {
+      #{$props}: $length !important;
+    }
+  }
+}
