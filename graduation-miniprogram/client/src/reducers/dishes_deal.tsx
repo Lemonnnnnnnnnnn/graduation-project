@@ -1,11 +1,11 @@
-import { TYPE_ADD_DISHES, TYPE_CLEAR_CAR } from '@/constants/dishes'
+import { TYPE_ADD_DISHES, TYPE_CLEAR_CAR, TYPE_SUBTRACT_DISHES } from '@/constants/dishes'
 
 // types
 import { dishesPayloadComplete } from '@/types/dishes'
 
 interface action {
   type: String,
-  payload: dishesPayloadComplete
+  payload: any
 }
 
 export default function shoppingCar(state: Array<dishesPayloadComplete> = [], action: action) {
@@ -25,12 +25,33 @@ export default function shoppingCar(state: Array<dishesPayloadComplete> = [], ac
 
       return [...state]
     }
+    case TYPE_SUBTRACT_DISHES: {
+      const choiseID = action.payload
+      // 引用的改变不算改变，监听不到redux中状态的变化，需要用深克隆
+      const stateClone = JSON.parse(JSON.stringify(state))
+
+      for (let i = 0; i < stateClone.length; i++) {
+        const currentItem = stateClone[i]
+        if (currentItem.dishesId === choiseID) {
+          if (--currentItem.num) {
+            currentItem.sum = currentItem.dishprice * currentItem.num
+          } else {
+            stateClone.splice(i, 1)
+          }
+        }
+      }
+      return stateClone
+
+    }
+
     case TYPE_CLEAR_CAR: {
-      state = []
-      return state
+      let stateClone = JSON.parse(JSON.stringify(state))
+      stateClone = []
+
+      return stateClone
     }
     default: {
-      return [...state]
+      return state
     }
   }
 }

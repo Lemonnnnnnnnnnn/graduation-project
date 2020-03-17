@@ -1,6 +1,6 @@
 export interface baseObj {
   id: number,
-  name: String,
+  title: String,
   active?: boolean
 }
 

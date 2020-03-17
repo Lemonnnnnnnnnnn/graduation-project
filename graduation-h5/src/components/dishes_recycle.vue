@@ -4,7 +4,7 @@
       style="text-align: right; font-size: 16px"
       v-loading.fullscreen.lock="fullscreenLoading"
     >
-      <span>历史订单</span>
+      <el-button @click="onCompleteTotal" type="success">清空回收站</el-button>
     </el-header>
 
     <el-main>
@@ -13,7 +13,7 @@
           <el-col :span="12">
             <el-tag type="info" style="font-size:1.5rem ">{{o.tableID}}桌</el-tag>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" :push="4">
             <el-tag type="success" style="font-size:1.5rem ">下单时间：{{o.timeComplete}}</el-tag>
           </el-col>
         </el-row>
@@ -68,7 +68,7 @@ export default {
   methods: {
     async getDishesArr() {
       this.fullscreenLoading = true;
-      axios.get("http://localhost:3001/dishes/recycleList").then(({ data }) => {
+      axios.get("http://localhost:3001/recycle/getList").then(({ data }) => {
         console.log(data);
         this.DishesArr = data;
         this.fullscreenLoading = false;

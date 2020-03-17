@@ -4,12 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var dishesTableRouter = require('./routes/dishesTable');
-var dishesRecycleRouter = require('./routes/dishesRecycle')
+var userRouter = require('./routes/user')
+var dishesRouter = require('./routes/dishes')
+var recycleRouter = require('./routes/recycle')
 var dishesCommodityRouter = require('./routes/getCommodityList')
 var indexRouter = require('./routes/index')
-var completeOrderRouter = require('./routes/completeOrder')
-var completeOneOrderRouter = require('./routes/completeOneOrder')
 
 var app = express();
 
@@ -32,11 +31,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/dishes/tableList', dishesTableRouter);
+app.use('/user', userRouter)
+app.use('/dishes', dishesRouter)
+app.use('/recycle', recycleRouter)
+
 app.use('/dishes/commodityList', dishesCommodityRouter)
-app.use('/dishes/recycleList', dishesRecycleRouter)
-app.use('/dishes/complete', completeOrderRouter)
-app.use('/dishes/completeOne', completeOneOrderRouter)
 
 
 // catch 404 and forward to error handler

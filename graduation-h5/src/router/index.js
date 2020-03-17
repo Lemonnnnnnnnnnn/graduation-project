@@ -11,21 +11,36 @@ import commodity from '../components/commodity.vue'
 
 
 export default new Router({
-    routes: [{
-        path: '/',
-        component: Layout,
-        redirect: '/dishes/tableList',
-        children: [{
-            path: '/dishes/tableList',
-            component: dishesList
-        }, {
-            path: '/dishes/recycleList',
-            component: dishesRecycle
+    routes: [
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('../views/login.vue')
         },
         {
-            path: '/dishes/commodity',
-            component: commodity
+            path: '/register',
+            name: 'register',
+            component: () => import('../views/register.vue')
+        },
+        {
+            path: '/',
+            component: Layout,
+            redirect: '/login',
+            children: [{
+                path: '/dishes/tableList',
+                component: dishesList
+            }, {
+                path: '/dishes/recycleList',
+                component: dishesRecycle
+            },
+            {
+                path: '/dishes/commodity',
+                component: commodity
+            }]
+        },
+        {
+            path: '*',
+            component: () => import('../views/404.vue')
         }
-        ]
-    }]
+    ]
 })

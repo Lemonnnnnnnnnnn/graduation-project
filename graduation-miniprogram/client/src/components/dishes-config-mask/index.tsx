@@ -5,33 +5,30 @@ import { View, Text } from '@tarojs/components'
 
 // types
 import { baseObj } from '@/types/obj'
-import { dishesPayload } from '@/types/dishes'
-
-// redux
-import { connect } from '@tarojs/redux'
-import * as dishesActions from '@/actions/dishes'
 
 type PageStateProps = {}
 
 type PageDispatchProps = {
-  dispatchAddDishes: Function
 }
 
 type PageOwnProps = {
   show: boolean,
-  Spicy?: Array<baseObj>,
-  format?: Array<baseObj>,
+  Spicy: boolean,
+  format: boolean,
   dishname: String,
   dishesId: String,
   dishphoto: String,
   dishprice: Number,
-  onCloseMask: Function
+  onCloseMask: Function,
+  ondispatchPayload: Function
 }
 
 type PageState = {
-  SpicyS: Array<baseObj>,
-  formatS: Array<baseObj>,
-  payload: dishesPayload,
+  SpicyS?: Array<baseObj>,
+  formatS?: Array<baseObj>,
+  Spicy: String,
+  format: String,
+  remark: String
   remarkTem: string
 }
 
@@ -42,9 +39,6 @@ interface DishesConfigMask {
   state: PageState
 }
 
-@connect(state => state, {
-  ...dishesActions
-})
 class DishesConfigMask extends Component {
   static options = {
     addGlobalClass: true
@@ -53,55 +47,50 @@ class DishesConfigMask extends Component {
   constructor(props: any) {
     super(props)
 
-    const { Spicy, format, dishname, dishesId, dishphoto, dishprice } = this.props
-    let Spicys = Spicy ? Spicy.map((i, key) => ({ ...i, active: key === 0 ? true : false })) : []
-    let formatS = format ? format.map((i, key) => ({ ...i, active: key === 0 ? true : false })) : []
-    let SpicyChoise: baseObj = { id: 0, name: '' }
-    let formatChoise: baseObj = { id: 0, name: '' }
+    const { Spicy, format} = this.props
+    const SpicyS = Spicy ? [
+      { id: 1, title: '原味', active: true },
+      { id: 2, title: '微辣', active: false },
+      { id: 3, title: '中辣', active: false },
+      { id: 4, title: '麻辣', active: false },
+    ] : []
 
-    if (Spicys.length) {
-      SpicyChoise = { id: Spicys[0].id, name: Spicys[0].name }
-    }
-    if (formatS.length) {
-      formatChoise = { id: formatS[0].id, name: formatS[0].name }
-    }
+    const formatS = format ? [
+      { id: 1, title: '小份', active: true },
+      { id: 2, title: '中份', active: false },
+      { id: 3, title: '大份', active: false },
+    ] : []
 
     this.state = {
-      SpicyS: Spicys,
-      formatS: formatS,
+      SpicyS,
+      formatS,
       remarkTem: '',
-      payload: {
-        dishname,
-        dishesId,
-        dishphoto,
-        dishprice,
-        Spicy: SpicyChoise,
-        format: formatChoise,
-        remark: '',
-      },
+      Spicy: Spicy ? SpicyS[0].title : '',
+      format: format ? formatS[0].title : '',
+      remark: '',
     }
   }
 
   onChoiseFormat(id: number) {
-    let { formatS, payload } = this.state
+    let { formatS, format } = this.state
     formatS && formatS.forEach(i => {
       if (i.id === id) {
         i.active = true
-        payload = { ...payload, format: { id: i.id, name: i.name } }
+        format = i.title
       } else i.active = false
     })
-    this.setState({ formatS, payload })
+    this.setState({ formatS, format })
   }
 
   onChoiseSpicy(id: number) {
-    let { SpicyS, payload } = this.state
+    let { SpicyS, Spicy } = this.state
     SpicyS && SpicyS.forEach(i => {
       if (i.id === id) {
         i.active = true
-        payload = { ...payload, Spicy: { id: i.id, name: i.name } }
+        Spicy = i.title
       } else i.active = false
     })
-    this.setState({ SpicyS, payload })
+    this.setState({ SpicyS, Spicy })
   }
 
   onInputRemark(value: String) {
@@ -110,11 +99,9 @@ class DishesConfigMask extends Component {
 
   // 确定按钮调用action放到全局状态库中去
   onConfirm() {
-    let { payload, remarkTem } = this.state
-    payload = { ...payload, remark: remarkTem }
+    let { Spicy, remarkTem, format } = this.state
 
-    this.setState({ payload })
-    this.props.dispatchAddDishes(payload)
+    this.props.ondispatchPayload({ params: { Spicy, remarkTem, format } })
     this.props.onCloseMask()
   }
 
@@ -138,7 +125,7 @@ class DishesConfigMask extends Component {
                     active={i.active}
                     onClick={this.onChoiseFormat.bind(this, i.id)}
                   >
-                    {i.name}
+                    {i.title}
                   </AtTag>)
                 }
               </View>
@@ -158,7 +145,7 @@ class DishesConfigMask extends Component {
                     active={i.active}
                     onClick={this.onChoiseSpicy.bind(this, i.id)}
                   >
-                    {i.name}
+                    {i.title}
                   </AtTag>)
                 }
               </View>

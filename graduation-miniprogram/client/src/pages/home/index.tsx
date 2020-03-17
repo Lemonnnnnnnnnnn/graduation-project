@@ -65,7 +65,7 @@ class Home extends Component {
 
   }
 
-  componentWillMount() {
+  componentDidShow() {
     // 验证用户是否登录，如未登录，跳转登录页面
     !Taro.getStorageSync('user_info') && Taro.navigateTo({ url: PAGE_AUTH })
 
@@ -79,6 +79,7 @@ class Home extends Component {
       }
     )
   }
+
 
   render() {
     const { Dishesitems } = this.state
