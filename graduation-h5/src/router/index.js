@@ -6,7 +6,7 @@ Vue.use(Router)
 /* Layout */
 import Layout from '../layout/index.vue'
 import dishesList from '../components/dishes_list.vue'
-import dishesRecycle from '../components/dishes_recycle.vue'
+import recycle from '../components/recycle.vue'
 import commodity from '../components/commodity.vue'
 
 
@@ -30,8 +30,8 @@ export default new Router({
                 path: '/dishes/tableList',
                 component: dishesList
             }, {
-                path: '/dishes/recycleList',
-                component: dishesRecycle
+                path: '/recycleList',
+                component: recycle
             },
             {
                 path: '/dishes/commodity',

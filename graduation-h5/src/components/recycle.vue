@@ -1,11 +1,19 @@
 <template>
   <el-container>
+    <el-backtop ></el-backtop>
     <el-header
       style="text-align: right; font-size: 16px"
       v-loading.fullscreen.lock="fullscreenLoading"
     >
       <el-button @click="onCompleteTotal" type="success">清空回收站</el-button>
     </el-header>
+
+    <div
+      style="display:flex ; justify-content : center ; align-items:center ; min-height : 10rem"
+      v-if="!this.DishesArr.length"
+    >
+      <span style="color:#67C23A">这里什么都没有哦</span>
+    </div>
 
     <el-main>
       <el-card v-for="o in this.DishesArr" :key="o._id" class="box-card">
@@ -32,13 +40,21 @@
           <el-table-column prop="sum" label="总价"></el-table-column>
           <el-table-column prop="dishprice" label="单价"></el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
-          <el-table-column fixed="right" label="操作">
-            <template slot-scope="scope">
-              <el-button type="danger" size="small">已完成</el-button>
-            </template>
-          </el-table-column>
         </el-table>
       </el-card>
+
+      <div
+        v-if="this.DishesArr.length"
+        style="margin : 3rem ;display : flex ; justify-content : center"
+        class="block"
+      >
+        <el-pagination
+          @current-change="onChangePage"
+          background
+          layout="prev, pager, next"
+          :total="this.total"
+        ></el-pagination>
+      </div>
     </el-main>
   </el-container>
 </template>
@@ -47,16 +63,18 @@
 import axios from "axios";
 
 export default {
-  name: "DishesRecycle",
+  name: "recycle",
   data() {
     return {
       DishesArr: [],
       loading: false,
-      fullscreenLoading: false
+      fullscreenLoading: false,
+      page: 1,
+      total: 0
     };
   },
   created() {
-    this.getDishesArr();
+    this.getRecycleList();
     console.log("初次获取回收站");
 
     // 每三十秒获取一次菜单
@@ -66,13 +84,26 @@ export default {
     // }, 30000);
   },
   methods: {
-    async getDishesArr() {
+    async getRecycleList() {
       this.fullscreenLoading = true;
-      axios.get("http://localhost:3001/recycle/getList").then(({ data }) => {
-        console.log(data);
-        this.DishesArr = data;
+      axios
+        .get(`http://localhost:3001/recycle/getList?page=${this.page}`)
+        .then(({ data: { list, total } }) => {
+          this.DishesArr = list;
+          this.total = total;
+          this.fullscreenLoading = false;
+        });
+    },
+    onCompleteTotal() {
+      this.fullscreenLoading = true;
+      axios.get(`http://localhost:3001/recycle/clear`).then(() => {
+        this.getRecycleList();
         this.fullscreenLoading = false;
       });
+    },
+    onChangePage(currentPage) {
+      this.page = currentPage;
+      this.getRecycleList();
     }
   }
 };

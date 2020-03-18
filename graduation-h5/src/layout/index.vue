@@ -21,7 +21,7 @@ export default {
       navList: [
         { name: "/dishes/tableList", navItem: "菜单", icon: "el-icon-menu" },
         {
-          name: "/dishes/recycleList",
+          name: "/recycleList",
           navItem: "历史订单",
           icon: "el-icon-document"
         },

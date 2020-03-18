@@ -7,7 +7,7 @@ var logger = require('morgan');
 var userRouter = require('./routes/user')
 var dishesRouter = require('./routes/dishes')
 var recycleRouter = require('./routes/recycle')
-var dishesCommodityRouter = require('./routes/getCommodityList')
+var commodityRouter = require('./routes/commodity')
 var indexRouter = require('./routes/index')
 
 var app = express();
@@ -34,8 +34,7 @@ app.use('/', indexRouter);
 app.use('/user', userRouter)
 app.use('/dishes', dishesRouter)
 app.use('/recycle', recycleRouter)
-
-app.use('/dishes/commodityList', dishesCommodityRouter)
+app.use('/commodity', commodityRouter)
 
 
 // catch 404 and forward to error handler

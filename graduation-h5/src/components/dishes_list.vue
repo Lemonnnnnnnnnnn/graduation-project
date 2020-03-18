@@ -1,5 +1,6 @@
 <template>
   <el-container>
+    <el-backtop></el-backtop>
     <el-header
       style="text-align: right; font-size: 16px"
       v-loading.fullscreen.lock="fullscreenLoading"
@@ -87,14 +88,13 @@ export default {
       axios.get(`http://localhost:3001/dishes/completeTotal`).then(res => {
         this.$message("所有订单已完成！");
         this.getDishesArr();
-        currentTable.loading = false;
+        this.fullscreenLoading = false;
       });
     },
 
     onComplete(id, itemId) {
       const { DishesArr } = this;
       const currentTable = DishesArr.find(i => i._id === id);
-      console.log(DishesArr);
       currentTable.loading = true;
 
       axios

@@ -2,7 +2,12 @@ var express = require('express');
 var router = express.Router();
 var dayjs = require('dayjs')
 var getToken = require('../utils/getToken')
-var { databaseQuery, databaseAdd, databaseDelete, databaseUpdate } = require('../utils/database')
+var { databaseQuery,
+    databaseAdd,
+    databaseDelete,
+    databaseUpdate,
+    databaseCollectionDelete,
+    databaseCollectionAdd } = require('../utils/database')
 
 router.get('/getTable', async function (req, res, next) {
     let access_token = global.token
@@ -13,7 +18,7 @@ router.get('/getTable', async function (req, res, next) {
     }
     const query = "db.collection(\"DishedTable\").get()"
 
-    let data = await databaseQuery(access_token, query)
+    let { data } = await databaseQuery(access_token, query)
     let newData = []
     data.map(i => newData.push(JSON.parse(i)))
 
@@ -21,6 +26,36 @@ router.get('/getTable', async function (req, res, next) {
 
 });
 
+// 完成全部订单
+router.get('/completeTotal', async function (req, res, next) {
+    let access_token = global.token
+    // 如果access_token不存在 先获取access_token
+    if (!access_token) {
+        getToken.then(res => access_token = res)
+    }
+
+    // 添加数据
+    const query = "db.collection(\"DishedTable\").get()"
+    let { data } = await databaseQuery(access_token, query)
+
+    data.forEach(i => {
+        const orderOverTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
+        const parpareData = JSON.stringify({ ...JSON.parse(i), orderOverTime })
+        const queryAdd = `db.collection(\"DishedRecycle\").add({data:${parpareData}})`
+        databaseAdd(access_token, queryAdd).catch(e => {
+            res.send(e)
+        })
+    })
+
+    // 删除集合，添加集合
+
+    const collection_name = 'DishedTable'
+    databaseCollectionDelete(access_token, collection_name)
+        .then(databaseCollectionAdd(access_token, collection_name).then(() => res.send('删除成功')))
+        .catch(e => console.log(e))
+})
+
+// 完成一桌订单
 router.get('/completeOneTable', async function (req, res, next) {
     let access_token = global.token
     // 如果access_token不存在 先获取access_token
@@ -32,7 +67,7 @@ router.get('/completeOneTable', async function (req, res, next) {
     let { query: { id } } = req
 
     const query = `db.collection(\"DishedTable\").doc(\"${id}\").get()`
-    let data = await databaseQuery(access_token, query)
+    let { data } = await databaseQuery(access_token, query)
     data = JSON.parse(data[0])
 
     // 执行添加方法
@@ -56,6 +91,7 @@ router.get('/completeOneTable', async function (req, res, next) {
     }
 });
 
+// 完成一单订单
 router.get('/completeOneOrder', async function (req, res, next) {
     let access_token = global.token
     // 如果access_token不存在 先获取access_token
@@ -69,7 +105,7 @@ router.get('/completeOneOrder', async function (req, res, next) {
     const idClone = id
 
     let queryTable = `db.collection(\"DishedTable\").doc(\"${id}\").get()`
-    let dataTable = await databaseQuery(access_token, queryTable)
+    let { data: dataTable } = await databaseQuery(access_token, queryTable)
     dataTable = JSON.parse(dataTable[0])
 
     const { list, tableID, timeComplete, timePart, total } = dataTable
@@ -103,7 +139,7 @@ router.get('/completeOneOrder', async function (req, res, next) {
 
     // 拿桌ID去回收站查
     const queryRecycle = `db.collection(\"DishedRecycle\").where({orderID:\"${id}\"}).get()`
-    const dataRecycle = await databaseQuery(access_token, queryRecycle)
+    const { data: dataRecycle } = await databaseQuery(access_token, queryRecycle)
     if (dataRecycle.length) {
         // 如果回收站存在这笔订单，使用更新方法
         let listRecycleNew = JSON.parse(dataRecycle[0]).list
@@ -115,7 +151,7 @@ router.get('/completeOneOrder', async function (req, res, next) {
 
         if (updateRecycleResult.errcode !== 0 || updateRecycleResult.modified !== 1) {
             res.send('回收站添加单一订单失败')
-            return 
+            return
         }
 
     } else {
@@ -128,7 +164,7 @@ router.get('/completeOneOrder', async function (req, res, next) {
         const AddResult = await databaseAdd(access_token, queryAdd)
         if (AddResult.errcode != 0) {
             res.send('回收站订单添加失败')
-            return 
+            return
         }
     }
 

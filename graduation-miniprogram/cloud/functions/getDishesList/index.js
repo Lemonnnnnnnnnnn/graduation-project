@@ -4,5 +4,5 @@ cloud.init({ env })
 const db = cloud.database()
 
 exports.main = async (event, context) => {
-  return db.collection('Dishes').get()
+  return db.collection('Dishes').orderBy('freq', 'desc').get()
 }

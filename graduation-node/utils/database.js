@@ -2,6 +2,7 @@ const environment = 'test-j9lpk'
 var getToken = require('../utils/getToken')
 var axios = require('axios')
 
+// 查找记录
 function databaseQuery(access_token, query) {
     return new Promise(async (resolve, reject) => {
         const params = {
@@ -14,7 +15,7 @@ function databaseQuery(access_token, query) {
 
         switch (data.errcode) {
             case 0: {
-                resolve(data.data)
+                resolve(data)
             } break
             case 40001: {
                 const newToken = await getToken()
@@ -27,6 +28,7 @@ function databaseQuery(access_token, query) {
     })
 }
 
+// 添加记录
 function databaseAdd(access_token, query) {
     return new Promise(async (resolve, reject) => {
         const urlAdd = `https://api.weixin.qq.com/tcb/databaseadd?access_token=${access_token}`
@@ -51,7 +53,7 @@ function databaseAdd(access_token, query) {
 
     })
 }
-
+// 删除记录
 function databaseDelete(access_token, query) {
     return new Promise(async (resolve, reject) => {
         const params = {
@@ -64,7 +66,7 @@ function databaseDelete(access_token, query) {
         resolve(data)
     })
 }
-
+// 更新记录
 function databaseUpdate(access_token, query) {
     return new Promise(async (resolve, reject) => {
         const params = {
@@ -78,9 +80,51 @@ function databaseUpdate(access_token, query) {
     })
 }
 
+// 添加集合
+function databaseCollectionAdd(access_token, collection_name) {
+    return new Promise(async (resolve, reject) => {
+        const urlAdd = `https://api.weixin.qq.com/tcb/databasecollectionadd?access_token=${access_token}`
+        const paramsAdd = {
+            env: environment,
+            collection_name
+        }
+
+        const { data } = await axios.post(urlAdd, paramsAdd)
+        switch (data.errcode) {
+            case 0: {
+                resolve(data)
+            } break
+            case 40001: {
+                const newToken = await getToken()
+                resolve(databasecollectionadd(newToken, collection_name))
+            } break
+            default: {
+                reject(data)
+            }
+        }
+
+    })
+}
+
+// 删除集合
+function databaseCollectionDelete(access_token, collection_name) {
+    return new Promise(async (resolve, reject) => {
+        const params = {
+            env: environment,
+            collection_name
+        }
+        const url = `https://api.weixin.qq.com/tcb/databasecollectiondelete?access_token=${access_token}`
+        let { data } = await axios.post(url, params)
+
+        resolve(data)
+    })
+}
+
 module.exports = {
     databaseUpdate,
     databaseDelete,
     databaseAdd,
-    databaseQuery
+    databaseQuery,
+    databaseCollectionAdd,
+    databaseCollectionDelete
 }

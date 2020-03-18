@@ -74,7 +74,7 @@ router.post('/login', function (req, res, next) {
 
     req.on('data', async data => {
         let queryTable = `db.collection("adminTable").where(${data}).get()`
-        let dataTable = await databaseQuery(access_token, queryTable).catch(e => console.log(e))
+        let { data: dataTable } = await databaseQuery(access_token, queryTable).catch(e => console.log(e))
         if (dataTable && dataTable.length) {
             res.send('登录成功')
         } else {
