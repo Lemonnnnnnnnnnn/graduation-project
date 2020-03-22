@@ -50,7 +50,8 @@ class UserAuth extends Component {
     const { target: { userInfo } } = event
 
     Taro.cloud.callFunction({
-      name: 'login'
+      name: 'login',
+      data: userInfo
     })
       .then(res => {
         let result: any = res.result

@@ -6,9 +6,8 @@ import { View, Button } from '@tarojs/components'
 import { PAGE_AUTH } from '@/constants/page'
 
 // components
-import Carousel from '@/components/carousel'
+import Loading from '@/components/loading'
 import DishesList from '@/components/dishes-List'
-import Board from '@/components/board'
 
 type PageStateProps = {}
 
@@ -21,6 +20,7 @@ type PageOwnProps = {}
 type PageState = {
   Dishesitems: any,
   tableID: String | Number,
+  loading: boolean
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -61,13 +61,14 @@ class Home extends Component {
     this.state = {
       Dishesitems: {},
       tableID,
+      loading: true
     }
 
   }
 
   componentDidShow() {
     // 验证用户是否登录，如未登录，跳转登录页面
-    !Taro.getStorageSync('user_info') && Taro.navigateTo({ url: PAGE_AUTH })
+    !Taro.getStorageSync('user_info').OPENID && Taro.navigateTo({ url: PAGE_AUTH })
 
     // 通过云函数获取菜品表数据
     Taro.cloud.callFunction({
@@ -75,29 +76,22 @@ class Home extends Component {
       data: {}
     }).then(
       ({ result }) => {
-        this.setState({ Dishesitems: result })
+        this.setState({ Dishesitems: result, loading: false })
       }
     )
   }
 
 
   render() {
-    const { Dishesitems } = this.state
-    return (
+    const { Dishesitems, loading } = this.state
+    return (!loading ?
       <View className='p-3 wrap-Style'>
         {/* 列表 */}
         <DishesList
           items={Dishesitems.data}
         />
-        {/* 底部tab栏 */}
-        <Board fixed='bottom'>
-          <View className='at-row at-row__justify--around'>
-
-          </View>
-        </Board>
-
-        {/* <Login /> */}
       </View>
+      : <Loading show />
     )
   }
 }

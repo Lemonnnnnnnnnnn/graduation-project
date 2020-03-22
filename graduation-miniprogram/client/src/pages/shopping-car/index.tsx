@@ -43,7 +43,8 @@ interface ShoppingCar {
 
 class ShoppingCar extends Component {
   config: Config = {
-    navigationBarTitleText: '购物车'
+    navigationBarTitleText: '购物车',
+    navigationBarBackgroundColor: '#56916D'
   }
 
   constructor(props: any) {

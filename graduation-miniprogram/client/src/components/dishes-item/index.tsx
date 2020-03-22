@@ -3,6 +3,9 @@ import { ComponentClass } from 'react'
 import { View, Text, Button } from '@tarojs/components';
 import { AtIcon } from 'taro-ui'
 
+// constants
+import { PAGE_DETAIL } from '@/constants/page'
+
 // components
 import Board from '@/components/board'
 import CustomImage from '@/components/custom-image'
@@ -140,29 +143,37 @@ class DishesItem extends Component {
 
         <View className='at-row'>
           {/* 左 菜图片 */}
-          <View className='at-col at-col-5'>
+          <View className='at-col at-col-5' onClick={() => Taro.navigateTo({ url: PAGE_DETAIL + '?id=' + dishesId })}>
             <CustomImage src={dishphoto} />
           </View>
           {/* 右 菜信息 */}
           <View className='p-2 position-relative at-col-6' >
             <View className='text-large'>{dishname}</View>
 
-            <View className='text-secondary text-small mt-2'>月销售数：{freq}</View>
+            <View className='text-secondary text-small mt-2'>总销售数：{freq}</View>
 
-            <View className='at-row at-row__align--center text-green mt-2'>
-              <Text className='text-normal'>￥</Text>
-              <Text className='text-huge'>{dishprice}</Text>
+            <View className='at-row at-row__align--center mt-2'>
+              <AtIcon value='star-2' color='#FFC919' size='15' />
+              <View className='ml-2 text-yellow text-large' style={{ marginTop: Taro.pxTransform(2 * 2) }}>{average}</View>
             </View>
 
-            {/* <View><AtIcon value='star-2' color='#FFC919' size='15' />{average}</View> */}
 
-            {/* 按钮 */}
-            <View className='position-absolute' style={{ right: Taro.pxTransform(20), bottom: Taro.pxTransform(20) }}>
-              <View className='at-row at-row__align--center'>
-                {num && <AtIcon onClick={this.onSubtractItem.bind(this, dishesId)} className='mr-3' value='subtract-circle' color='#56916D' size='28' />}
-                {num && <View className='mr-3 text-green'>{num}</View>}
-                <AtIcon onClick={this.onAddItem.bind(this)} value='add-circle' color='#56916D' size='28' />
+
+            <View className='at-row at-row__justify--between at-row__align--center position-absolute' style={{ bottom: Taro.pxTransform(5 * 2) }} >
+              <View className='at-row at-row__align--center text-green mt-2'>
+                <Text className='text-large'>￥</Text>
+                <Text style={{ fontSize: Taro.pxTransform(24 * 2), marginBottom: Taro.pxTransform(4 * 2) }}>{dishprice}</Text>
               </View>
+
+              {/* 按钮 */}
+              <View >
+                <View className='at-row at-row__align--center'>
+                  {num && <AtIcon onClick={this.onSubtractItem.bind(this, dishesId)} className='mr-3' value='subtract-circle' color='#56916D' size='28' />}
+                  {num && <View className='mr-3 text-green'>{num}</View>}
+                  <AtIcon onClick={this.onAddItem.bind(this)} value='add-circle' color='#56916D' size='28' />
+                </View>
+              </View>
+
             </View>
 
           </View>

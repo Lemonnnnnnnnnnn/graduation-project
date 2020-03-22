@@ -23,3 +23,9 @@ export interface dishesPayloadComplete {
   sum: number
 }
 
+export interface dishesRate {
+  average: number,
+  content: string,
+  dishname: string,
+  dishphoto: string
+}

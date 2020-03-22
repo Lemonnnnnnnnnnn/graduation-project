@@ -4,6 +4,7 @@ import { View, Text, OpenData } from '@tarojs/components'
 
 // components
 import CustomImage from '@/components/custom-image/'
+import DishesList from '@/components/dishes-List'
 
 type PageStateProps = {}
 
@@ -25,7 +26,7 @@ interface User {
 class User extends Component {
 
   config: Config = {
-    navigationBarTitleText: '我的'
+    navigationBarTitleText: '用户中心',
   }
 
   constructor(props) {
@@ -33,8 +34,8 @@ class User extends Component {
     this.state = {
       name: '小红'
     }
-
   }
+
   componentWillReceiveProps(nextProps) { }
 
   componentWillUnmount() { }
@@ -44,11 +45,15 @@ class User extends Component {
   componentDidHide() { }
 
   render() {
-    const user_info = Taro.getStorageSync('user_info')
+    const { avatarUrl, nickName, integral } = Taro.getStorageSync('user_info')
 
     return (
       <View className='user'>
-        <CustomImage src={user_info.avatarUrl} width='50' height='50' />
+        <View className='at-row at-row__justify--center'>
+          <CustomImage src={avatarUrl} width='50' height='50' customStyle={{ borderRadius: '50%' }} />
+          <View>{nickName}</View>
+          <View>当前积分：{integral}</View>
+        </View>
       </View>
     )
   }
