@@ -9,11 +9,23 @@ const db = cloud.database()
 const _ = db.command
 
 exports.main = async (event, context) => {
-    const { list, total, tableID, timePart, timeComplete } = event
+    const { list, total, tableID, timePart, timeComplete, OPENID } = event
+    // 更新菜品销售量
     for (let i = 0; i < list.length; i++) {
-        db.collection('Dishes').doc(list[i].dishesId).update({
+        await db.collection('Dishes').doc(list[i].dishesId).update({
             data: {
                 freq: _.inc(list[i].num)
+            },
+            success: () => { },
+            fail: (e) => console.log(e)
+        })
+    }
+
+    // 更新用户积分
+    for (let i = 0; i < list.length; i++) {
+        await db.collection('members').where({ OPENID }).update({
+            data: {
+                integral: _.inc(list[i].num * list[i].scores)
             },
             success: () => { },
             fail: (e) => console.log(e)

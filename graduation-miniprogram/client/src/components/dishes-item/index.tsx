@@ -33,7 +33,7 @@ type PageOwnProps = {
   dishphoto: String,
   dishprice: Number,
   freq: Number,
-  scores?: Number,
+  scores: number,
   key: string,
   dishesId: string,
   Spicy: boolean,
@@ -63,7 +63,7 @@ class DishesItem extends Component {
 
   constructor(props: any) {
     super(props)
-    const { dishphoto, dishname, dishprice, Spicy, format, dishesId } = this.props
+    const { dishphoto, dishname, dishprice, Spicy, format, dishesId, scores } = this.props
 
     this.state = {
       showConfigMask: false,
@@ -73,9 +73,10 @@ class DishesItem extends Component {
         dishesId,
         dishphoto,
         dishprice,
+        scores,
         Spicy: '',
         format: '',
-        remark: '',
+        remarkTem: '',
       },
     }
   }
@@ -104,7 +105,7 @@ class DishesItem extends Component {
   }
 
   render() {
-    const { average, dishphoto, dishname, dishprice, freq, Spicy, format, dishesId, shoppingCar } = this.props
+    const { average, dishphoto, dishname, dishprice, freq, Spicy, format, dishesId, shoppingCar, scores } = this.props
     const { showConfigMask, existConfigMask } = this.state
     let num = 0
 
@@ -117,7 +118,7 @@ class DishesItem extends Component {
 
     /**
      *  find() 对于空数组，函数是不会执行的。
-     *  所以当shoppingCar从1=>[]时，currentItem = 空执行
+     *  所以当shoppingCar从[1]=>[]时，currentItem = 空执行
      *  在下一行打印其为undefined
      *  但在三目运算符中 用 currentItem && View 成功执行了方法，并且读的是上一个currentItem值
      *  故而猜测因为我引用了currentItem.num，故而生成了闭包，导致currentItem的值没有被销毁，我读取到了缓存中的值
@@ -129,10 +130,6 @@ class DishesItem extends Component {
       <Board shadow='gray' className='wrap-Style my-2'>
         {/* 弹窗 */}
         {existConfigMask && <DishesConfigMask
-          dishname={dishname}
-          dishesId={dishesId}
-          dishprice={dishprice}
-          dishphoto={dishphoto}
           ondispatchPayload={this.ondispatchPayload.bind(this)}
           Spicy={Spicy}
           format={format}
@@ -141,28 +138,36 @@ class DishesItem extends Component {
           onCloseMask={this.onCloseMask.bind(this)}
         />}
 
-        <View className='at-row'>
+        <View className='at-row' style={{ minHeight: Taro.pxTransform(140 * 2) }}>
           {/* 左 菜图片 */}
           <View className='at-col at-col-5' onClick={() => Taro.navigateTo({ url: PAGE_DETAIL + '?id=' + dishesId })}>
             <CustomImage src={dishphoto} />
           </View>
           {/* 右 菜信息 */}
           <View className='p-2 position-relative at-col-6' >
+            {/* 第一行名字 */}
             <View className='text-large'>{dishname}</View>
 
+            {/* 第二行销售 */}
             <View className='text-secondary text-small mt-2'>总销售数：{freq}</View>
 
-            <View className='at-row at-row__align--center mt-2'>
-              <AtIcon value='star-2' color='#FFC919' size='15' />
-              <View className='ml-2 text-yellow text-large' style={{ marginTop: Taro.pxTransform(2 * 2) }}>{average}</View>
+            {/* 第三行平均分积分 */}
+            <View className='at-row at-row__justify--between at-row__align--center mt-2'>
+
+              <View className='at-col at-col-7'>
+                <View className='at-row at-row__align--center '>
+                  <AtIcon value='star-2' color='#FFC919' size='15' />
+                  <View className='ml-2 text-yellow text-large' style={{ marginTop: Taro.pxTransform(2 * 2) }}>{average}</View>
+                </View>
+              </View>
+
+              <View className='at-col at-col-5 text-secondary text-small' style={{ marginTop: Taro.pxTransform(2 * 2) }}>积分：{scores}</View>
             </View>
 
-
-
             <View className='at-row at-row__justify--between at-row__align--center position-absolute' style={{ bottom: Taro.pxTransform(5 * 2) }} >
-              <View className='at-row at-row__align--center text-green mt-2'>
+              <View className='at-row at-row__align--center text-green '>
                 <Text className='text-large'>￥</Text>
-                <Text style={{ fontSize: Taro.pxTransform(24 * 2), marginBottom: Taro.pxTransform(4 * 2) }}>{dishprice}</Text>
+                <Text className='text-huge' style={{ marginBottom: Taro.pxTransform(2 * 2) }}>{dishprice}</Text>
               </View>
 
               {/* 按钮 */}

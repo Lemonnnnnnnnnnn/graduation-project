@@ -3,7 +3,7 @@ import { ComponentClass } from 'react'
 import { View, Text, Button } from '@tarojs/components';
 
 // components
-import DishesItem from '@/components/dishes-item'
+import IntegralItem from '@/components/integral-item'
 
 type PageStateProps = {}
 
@@ -12,6 +12,7 @@ type PageDispatchProps = {
 
 type PageOwnProps = {
   items: any[],
+  integral: number
 }
 
 type PageState = {
@@ -19,35 +20,33 @@ type PageState = {
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface DishesList {
+interface IntegralList {
   props: IProps;
   state: PageState
 }
 
 
-class DishesList extends Component {
+class IntegralList extends Component {
 
   static defaultProps = {
     items: []
   }
 
   render() {
-    const { items } = this.props
+    const { items ,integral } = this.props
     return (
       <View>
         {
           items.map((i) =>
-            <DishesItem
+            <IntegralItem
               dishesId={i._id}
               format={i.format}
               Spicy={i.Spicy}
-              average={i.average}
               dishname={i.dishname}
               dishphoto={i.dishphoto}
-              dishprice={i.dishprice}
-              freq={i.freq}
               scores={i.scores}
               key={i._id}
+              integral={integral}
             />)
         }
 
@@ -56,4 +55,4 @@ class DishesList extends Component {
   }
 }
 
-export default DishesList as ComponentClass<PageOwnProps, PageState>
+export default IntegralList as ComponentClass<PageOwnProps, PageState>

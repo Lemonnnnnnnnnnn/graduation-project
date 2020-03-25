@@ -1,12 +1,24 @@
 <template>
   <el-container style="border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-active="this.$route.path" router>
-        <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
-          <i :class="item.icon"></i>
-          <span slot="title">{{ item.navItem }}</span>
-        </el-menu-item>
-      </el-menu>
+    <el-aside width="200px" style="background-color: rgb(238, 241, 246) ; position:relative">
+      <div style="position:fixed ; left : 0 ; width : 200px">
+        <el-menu :default-active="this.$route.path" router style="min-height : 60rem">
+          <!-- LOGO -->
+          <div style="display : flex ; justify-content : center">
+            <img
+              src="https://tse3-mm.cn.bing.net/th/id/OIP.K4-UcxsltoxOo6pHEsBnDwHaHP?w=202&h=193&c=7&o=5&dpr=1.25&pid=1.7"
+              alt
+              style="border-radius : 50% ; width :150px ; height : auto ; margin-bottom : 20px "
+            />
+          </div>
+
+          <!-- 导航栏 -->
+          <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
+            <i :class="item.icon"></i>
+            <span slot="title">{{ item.navItem }}</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
     </el-aside>
 
     <router-view></router-view>
@@ -29,8 +41,12 @@ export default {
           name: "/dishes/commodity",
           navItem: "商品页面",
           icon: "el-icon-s-order"
+        },
+        {
+          name: "/specialList",
+          navItem: "可兑换商品",
+          icon: "el-icon-setting"
         }
-        // { name: "/test", navItem: "导航3" }
       ]
     };
   }

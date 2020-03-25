@@ -51,7 +51,11 @@ router.get('/completeTotal', async function (req, res, next) {
 
     const collection_name = 'DishedTable'
     databaseCollectionDelete(access_token, collection_name)
-        .then(databaseCollectionAdd(access_token, collection_name).then(() => res.send('删除成功')))
+        .then(
+            () => databaseCollectionAdd(access_token, collection_name)
+                .then(() => res.send('删除成功'))
+                .catch(e => console.log(e))
+        )
         .catch(e => console.log(e))
 })
 

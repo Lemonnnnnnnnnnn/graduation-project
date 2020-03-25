@@ -78,8 +78,15 @@ class Index extends Component {
     }
 
     componentWillMount() {
-        const { OPENID } = Taro.getStorageSync('user_info')
         this.onGetDishDetail()
+    }
+
+    componentDidShow() {
+        this.onGetUserDetail()
+    }
+
+    onGetUserDetail() {
+        const { OPENID } = Taro.getStorageSync('user_info')
 
         Taro.cloud.callFunction({
             name: 'getUserDetail',
@@ -159,7 +166,7 @@ class Index extends Component {
                 <AtDivider className='mx-4 width-auto' content='评价中心' fontColor='#ed3f14' lineColor='#ed3f14' />
 
                 {/* 用户栏  */}
-                <View className='at-row mt-4'>
+                {isLogin ? <View className='at-row mt-4'>
 
                     <View className='at-col at-col-8 px-3'>
                         <View className='text-normal text-bold mb-3'>用户评价：</View>
@@ -196,15 +203,18 @@ class Index extends Component {
                     </View>
 
                     <View className='at-col at-col-4 px-2' style={{ borderLeft: '1px solid #999', minHeight: Taro.pxTransform(300 * 2) }}>
-                        {isLogin ? <View className='text-center'>
+                        <View className='text-center'>
                             <CustomImage src={avatarUrl} width='50' height='50' customStyle={{ borderRadius: '50%' }} />
                             <View className='mt-2 text-large text-bold'>{nickName}</View>
                             <View className='mt-2 text-normal'>积分：{integral}</View>
-                            <AtBadge className='mt-3' dot> <View onClick={() => Taro.navigateTo({ url: PAGE_USER })} className='text-small text-secondary'>积分有什么用？</View></AtBadge>
-
-                        </View> : <AtButton type='primary' onClick={() => Taro.navigateTo({ url: PAGE_AUTH })}>登录后查看</AtButton>}
+                            <AtBadge className='mt-3' dot> <View onClick={() => Taro.switchTab({ url: PAGE_USER })} className='text-small text-secondary'>积分有什么用？</View></AtBadge>
+                        </View>
                     </View>
                 </View>
+                    : <View className='at-row at-row__align--center at-row__justify--center' style={{ height: Taro.pxTransform(100 * 2) }}>
+                        <AtButton type='primary' onClick={() => Taro.navigateTo({ url: PAGE_AUTH })}>请登录后查看~</AtButton>
+                    </View>
+                }
 
             </View>
             : <Loading show />

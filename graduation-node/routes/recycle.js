@@ -38,7 +38,11 @@ router.get('/clear', async function (req, res, next) {
 
     const collection_name = 'DishedRecycle'
     databaseCollectionDelete(access_token, collection_name)
-        .then(databaseCollectionAdd(access_token, collection_name).then(() => res.send('已清空回收站')))
+        .then(
+            () => databaseCollectionAdd(access_token, collection_name)
+                .then(() => res.send('已清空回收站'))
+                .catch(e => console.log(e))
+        )
         .catch(e => console.log(e))
 })
 

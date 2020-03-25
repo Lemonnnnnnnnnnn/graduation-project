@@ -15,12 +15,11 @@ type PageOwnProps = {
   show: boolean,
   Spicy: boolean,
   format: boolean,
-  dishname: String,
-  dishesId: String,
-  dishphoto: String,
-  dishprice: Number,
   onCloseMask: Function,
-  ondispatchPayload: Function
+  ondispatchPayload: Function,
+  special: boolean,
+  scores?: number,
+  integral?: number
 }
 
 type PageState = {
@@ -28,7 +27,6 @@ type PageState = {
   formatS?: Array<baseObj>,
   Spicy: String,
   format: String,
-  remark: String
   remarkTem: string
 }
 
@@ -47,7 +45,7 @@ class DishesConfigMask extends Component {
   constructor(props: any) {
     super(props)
 
-    const { Spicy, format} = this.props
+    const { Spicy, format } = this.props
     const SpicyS = Spicy ? [
       { id: 1, title: '原味', active: true },
       { id: 2, title: '微辣', active: false },
@@ -67,7 +65,6 @@ class DishesConfigMask extends Component {
       remarkTem: '',
       Spicy: Spicy ? SpicyS[0].title : '',
       format: format ? formatS[0].title : '',
-      remark: '',
     }
   }
 
@@ -99,10 +96,26 @@ class DishesConfigMask extends Component {
 
   // 确定按钮调用action放到全局状态库中去
   onConfirm() {
+    const { special, scores, integral } = this.props
     let { Spicy, remarkTem, format } = this.state
-
-    this.props.ondispatchPayload({ params: { Spicy, remarkTem, format } })
-    this.props.onCloseMask()
+    if (special) {
+      Taro.showModal({
+        title: `确认以${scores}积分换取吗?`,
+        success: ({ confirm }) => {
+          this.props.onCloseMask()
+          if (confirm && scores && integral) {
+            if (scores <= integral) {
+              this.props.ondispatchPayload({ params: { Spicy, remarkTem, format } })
+            } else {
+              Taro.showToast({ icon: 'none', title: '积分不足' })
+            }
+          }
+        }
+      })
+    } else {
+      this.props.onCloseMask()
+      this.props.ondispatchPayload({ params: { Spicy, remarkTem, format } })
+    }
   }
 
   render() {

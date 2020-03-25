@@ -33,12 +33,24 @@
           element-loading-background="rgba(0, 0, 0, 0.8)"
         >
           <el-table-column prop="dishname" label="菜名"></el-table-column>
-          <el-table-column prop="Spicy" label="辣度"></el-table-column>
-          <el-table-column prop="format" label="尺寸"></el-table-column>
-          <el-table-column prop="num" label="数量"></el-table-column>
-          <el-table-column prop="sum" label="总价"></el-table-column>
-          <el-table-column prop="dishprice" label="单价"></el-table-column>
-          <el-table-column prop="remark" label="备注"></el-table-column>
+          <el-table-column prop="Spicy" label="辣度">
+            <template slot-scope="scope">{{scope.row.Spicy ? scope.row.Spicy : '默认'}}</template>
+          </el-table-column>
+          <el-table-column prop="format" label="尺寸">
+            <template slot-scope="scope">{{scope.row.format ? scope.row.format : '默认'}}</template>
+          </el-table-column>
+          <el-table-column prop="num" label="数量">
+            <template slot-scope="scope">{{scope.row.num ? scope.row.num : 1}}</template>
+          </el-table-column>
+          <el-table-column prop="sum" label="总价">
+            <template slot-scope="scope">{{scope.row.sum ? scope.row.sum : '积分兑换'}}</template>
+          </el-table-column>
+          <el-table-column prop="dishprice" label="单价">
+            <template slot-scope="scope">{{scope.row.dishprice ? scope.row.dishprice : '积分兑换'}}</template>
+          </el-table-column>
+          <el-table-column prop="remarkTem" label="备注">
+            <template slot-scope="scope">{{scope.row.remarkTem ? scope.row.remarkTem : '无备注'}}</template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -69,7 +81,6 @@ export default {
     this.getDishesArr();
     console.log("初次获取菜单");
 
-    // 每三十秒获取一次菜单
     // setInterval(() => {
     //   this.getDishesArr();
     //   console.log("获取最新菜单");

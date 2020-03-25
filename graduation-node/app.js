@@ -8,6 +8,7 @@ var userRouter = require('./routes/user')
 var dishesRouter = require('./routes/dishes')
 var recycleRouter = require('./routes/recycle')
 var commodityRouter = require('./routes/commodity')
+var specialRouter = require('./routes/special')
 var indexRouter = require('./routes/index')
 
 var app = express();
@@ -35,6 +36,7 @@ app.use('/user', userRouter)
 app.use('/dishes', dishesRouter)
 app.use('/recycle', recycleRouter)
 app.use('/commodity', commodityRouter)
+app.use('/special', specialRouter)
 
 
 // catch 404 and forward to error handler

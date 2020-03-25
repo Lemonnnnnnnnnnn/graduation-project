@@ -6,7 +6,19 @@ export interface dishesPayload {
   dishprice: Number,
   Spicy: String,
   format: String,
-  remark: String,
+  remarkTem: String,
+  scores: number,
+  // num?: Number,
+}
+
+export interface integralPayload {
+  dishname: String,
+  dishesId: String,
+  dishphoto: String,
+  Spicy: String,
+  format: String,
+  remarkTem: String,
+  scores: number,
   // num?: Number,
 }
 

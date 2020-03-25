@@ -1,0 +1,20 @@
+@import "overrides";
+
+.page {
+    &-mask {
+        position  : fixed;
+        left      : 0;
+        width     : 100vh;
+        height    : 100vh;
+        z-index   : 10;
+        background: rgba(0, 0, 0, 0.6);
+    }
+    &-user{
+        min-height: 100vh;
+        background: linear-gradient(to bottom ,  #fff ,#56916D );
+    }
+}
+
+mask {
+    z-index: 10;
+}
