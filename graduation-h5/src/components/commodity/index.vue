@@ -52,6 +52,7 @@
 <script>
 import axios from "axios";
 import ModifyMask from "./modifyMask";
+import { targetUrl } from "../../constants/request";
 
 export default {
   name: "commodity",
@@ -70,7 +71,7 @@ export default {
   methods: {
     getDishesArr() {
       this.fullscreenLoading = true;
-      axios.get("http://localhost:3001/commodity/getList").then(({ data }) => {
+      axios.get(`${targetUrl}/commodity/getList`).then(({ data }) => {
         const newArr = [];
         data.forEach(i => {
           newArr.push({ ...i, active: false });
@@ -92,7 +93,7 @@ export default {
     onRemove(data) {
       this.dialogMsg = JSON.parse(JSON.stringify(data));
       const { dialogMsg } = this;
-      const url = "http://localhost:3001/commodity/remove";
+      const url = `${targetUrl}/commodity/remove`;
       axios
         .post(url, dialogMsg, {
           headers: { "Content-Type": "application" }
@@ -109,12 +110,12 @@ export default {
       switch (type) {
         case "modify":
           {
-            url = "http://localhost:3001/commodity/modify";
+            url = `${targetUrl}/commodity/modify`;
           }
           break;
         case "add":
           {
-            url = "http://localhost:3001/commodity/add";
+            url = `${targetUrl}/commodity/add`;
           }
           break;
       }

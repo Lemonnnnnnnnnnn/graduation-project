@@ -4,16 +4,20 @@ var getToken = require('../utils/getToken')
 var { databaseQuery, databaseAdd, databaseDelete, databaseUpdate } = require('../utils/database')
 
 router.get('/getList', async function (req, res, next) {
+    // 从全局变量中获取凭证
     let access_token = global.token
 
+    // 如果凭证不存在则调用方法获取一次
     if (!access_token) {
         access_token = await getToken()
     }
 
     const query = `db.collection(\"Dishes\").get()`
 
+    // 调用封装的数据库操作方法,将结果从JSON对象转化为普通对象传递给客户端
     let { data } = await databaseQuery(access_token, query)
     let newData = []
+    
     data.map(i => newData.push(JSON.parse(i)))
 
     res.send(newData)

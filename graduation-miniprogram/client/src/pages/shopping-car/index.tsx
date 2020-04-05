@@ -1,5 +1,5 @@
 import { ComponentClass } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component, Config, request } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 // npm包
@@ -39,10 +39,14 @@ interface ShoppingCar {
   state: PageState
 }
 
+/**
+ * @connect 是一个装饰器，以@connect()(类对象)使用
+ * 目的是将redux中的数据和方法添加进class的props对象
+ * 同时为redux中的方法传入一个dispatch方法，使其具有发送actions到reducer的功能
+ */
 @connect(state => state, {
   ...dishesActions
 })
-
 class ShoppingCar extends Component {
   config: Config = {
     navigationBarTitleText: '购物车',
@@ -89,6 +93,10 @@ class ShoppingCar extends Component {
     const { shoppingCar } = this.props
     const { total } = this.state
     const { tableID, OPENID } = Taro.getStorageSync('user_info')
+
+    const dev = 'http://localhost:3000'
+    const prod = 'https://www.linyuchen.xyz'
+
     Taro.cloud.callFunction({
       name: 'submitMenu',
       data: {
@@ -103,9 +111,15 @@ class ShoppingCar extends Component {
       Taro.showToast({ icon: 'none', title: '订单已提交，请耐心等待' })
       this.props.dispatchClearCar()
       this.setState({ total: 0, showLoginMask: false })
+    }).then(() => {
+      Taro.request({
+        url: `${prod}/submitMenu`,
+        data: {},
+        method: 'POST',
+        success: (res) => { console.log(res) }
+      })
     })
   }
-
 
 
   render() {

@@ -1,16 +1,21 @@
+// 引用微信服务npm库 定义云开发环境变量
 const cloud = require('wx-server-sdk')
 const environment = 'test-j9lpk'
 
+// 初始化云开发服务
 cloud.init({
     env: environment,
 })
 
+// 定义数据库和查询指令变量
 const db = cloud.database()
 const _ = db.command
 
 exports.main = async (event, context) => {
+    // 从event中可以读到传递过来的变量
     const { list, total, tableID, timePart, timeComplete, OPENID } = event
     // 更新菜品销售量
+    // 遍历list，从数据库中找到目标id的菜品，执行数量增加操作
     for (let i = 0; i < list.length; i++) {
         await db.collection('Dishes').doc(list[i].dishesId).update({
             data: {
@@ -22,6 +27,7 @@ exports.main = async (event, context) => {
     }
 
     // 更新用户积分
+    // 遍历list，从数据库中找到下单的用户，更新用户积分
     for (let i = 0; i < list.length; i++) {
         await db.collection('members').where({ OPENID }).update({
             data: {
@@ -32,6 +38,7 @@ exports.main = async (event, context) => {
         })
     }
 
+    // 将数据添加到菜单表
     return new Promise((resolve, reject) => {
         db.collection('DishedTable').add({
             data: {

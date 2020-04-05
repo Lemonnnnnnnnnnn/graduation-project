@@ -21,6 +21,8 @@
 
 <script>
 import axios from "axios";
+import { targetUrl } from "../constants/request";
+
 export default {
   data() {
     return {
@@ -33,7 +35,7 @@ export default {
       const { inputAccount, inputPassword } = this;
       const obj = { inputAccount, inputPassword };
       axios
-        .post("http://localhost:3001/user/login", obj, {
+        .post(`${targetUrl}/user/login`, obj, {
           headers: { "Content-Type": "application" }
         })
         .then(res => {
@@ -87,7 +89,7 @@ export default {
   min-width: 1000px;
   z-index: -10;
 
-  background-image: url("http://www.linyuchen-pic.xyz/images/2020/03/14/95j6mk.jpg");
+  background-image: url("https://tse3-mm.cn.bing.net/th/id/OIP.16-xGqdRH5CtbAdOJG2GLwHaEK?w=300&h=168&c=7&o=5&dpr=1.25&pid=1.7");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center 0;

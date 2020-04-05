@@ -4,19 +4,23 @@ var axios = require('axios')
 
 // 查找记录
 function databaseQuery(access_token, query) {
+    // 将结果作为promise对象return出去
     return new Promise(async (resolve, reject) => {
+        // 参数为数据库查询语句query和云数据库环境
         const params = {
             env: environment,
             query
         }
         const url = `https://api.weixin.qq.com/tcb/databasequery?access_token=${access_token}`
         // 分别处理查到信息和没有查到信息的情况
+        
         let { data } = await axios.post(url, params)
-
         switch (data.errcode) {
+            // 如果成功获取,将结果抛出
             case 0: {
                 resolve(data)
             } break
+            // 如果access_token过期,执行获取access_token的函数,并将重新请求的结果抛出
             case 40001: {
                 const newToken = await getToken()
                 resolve(databaseAdd(newToken, query))

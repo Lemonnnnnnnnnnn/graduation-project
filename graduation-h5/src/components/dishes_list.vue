@@ -68,6 +68,7 @@
 
 <script>
 import axios from "axios";
+import { targetUrl, targetWs } from "../constants/request";
 
 export default {
   name: "DishesList",
@@ -77,18 +78,46 @@ export default {
       fullscreenLoading: false
     };
   },
+  // 组件创建时初始化websocket连接,开启连接并准备接受信息
   created() {
     this.getDishesArr();
-    console.log("初次获取菜单");
-
-    // setInterval(() => {
-    //   this.getDishesArr();
-    //   console.log("获取最新菜单");
-    // }, 30000);
+    this.initWebSocket();
+  },
+  // 组件销毁时关闭websocket连接
+  destroyed() {
+    this.websock.websocketclose();
   },
   methods: {
+    // 整合websocket方法,包括  开启连接  连接错误  接受信息  关闭连接
+    initWebSocket: function() {
+      this.websock = new WebSocket(`${targetWs}/submitMenu`);
+      this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      this.websock.onmessage = this.websocketonmessage;
+      this.websock.onclose = this.websocketclose;
+    },
+    // websocket开启时调用方法
+    websocketonopen: function() {
+      console.log("WebSocket连接成功");
+      // this.websock.send("连接成功");
+    },
+    // websocket连接错误时调用方法
+    websocketonerror: function(e) {
+      console.log("WebSocket连接发生错误");
+    },
+    // websocket接受信息时调用方法
+    websocketonmessage: function(data) {
+      console.log(data);
+      // 重新刷新菜单
+      this.getDishesArr();
+    },
+    // websocket关闭时调用方法
+    websocketclose: function(e) {
+      console.log('close')
+      // console.log("connection closed (" + e.code + ")");
+    },
     async getDishesArr() {
-      axios.get("http://localhost:3001/dishes/getTable").then(({ data }) => {
+      axios.get(`${targetUrl}/dishes/getTable`).then(({ data }) => {
         const newData = data.map(i => ({ ...i, loading: false }));
         this.DishesArr = newData;
       });
@@ -96,7 +125,7 @@ export default {
 
     onCompleteTotal() {
       this.fullscreenLoading = true;
-      axios.get(`http://localhost:3001/dishes/completeTotal`).then(res => {
+      axios.get(`${targetUrl}/dishes/completeTotal`).then(res => {
         this.$message("所有订单已完成！");
         this.getDishesArr();
         this.fullscreenLoading = false;
@@ -109,9 +138,7 @@ export default {
       currentTable.loading = true;
 
       axios
-        .get(
-          `http://localhost:3001/dishes/completeOneOrder?id=${id}&itemId=${itemId}`
-        )
+        .get(`${targetUrl}/dishes/completeOneOrder?id=${id}&itemId=${itemId}`)
         .then(res => {
           this.$message("订单已完成！");
           this.getDishesArr();
@@ -123,13 +150,11 @@ export default {
       const currentTable = DishesArr.find(i => i._id === id);
       currentTable.loading = true;
       // this.loading = true;
-      axios
-        .get(`http://localhost:3001/dishes/completeOneTable?id=${id}`)
-        .then(res => {
-          this.$message("订单已完成！");
-          this.getDishesArr();
-          currentTable.loading = false;
-        });
+      axios.get(`${targetUrl}/dishes/completeOneTable?id=${id}`).then(res => {
+        this.$message("订单已完成！");
+        this.getDishesArr();
+        currentTable.loading = false;
+      });
     }
   }
 };

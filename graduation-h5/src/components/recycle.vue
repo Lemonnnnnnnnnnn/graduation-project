@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-backtop ></el-backtop>
+    <el-backtop></el-backtop>
     <el-header
       style="text-align: right; font-size: 16px"
       v-loading.fullscreen.lock="fullscreenLoading"
@@ -61,6 +61,7 @@
 
 <script>
 import axios from "axios";
+import { targetUrl } from "../constants/request";
 
 export default {
   name: "recycle",
@@ -87,7 +88,7 @@ export default {
     async getRecycleList() {
       this.fullscreenLoading = true;
       axios
-        .get(`http://localhost:3001/recycle/getList?page=${this.page}`)
+        .get(`${targetUrl}/recycle/getList?page=${this.page}`)
         .then(({ data: { list, total } }) => {
           this.DishesArr = list;
           this.total = total;
@@ -96,7 +97,7 @@ export default {
     },
     onCompleteTotal() {
       this.fullscreenLoading = true;
-      axios.get(`http://localhost:3001/recycle/clear`).then(() => {
+      axios.get(`${targetUrl}/recycle/clear`).then(() => {
         this.getRecycleList();
         this.fullscreenLoading = false;
       });

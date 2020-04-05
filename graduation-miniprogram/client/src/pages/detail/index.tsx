@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { AtRate, AtButton, AtBadge, AtTextarea, AtCard ，AtDivider } from 'taro-ui'
+import { AtRate, AtButton, AtBadge, AtTextarea, AtCard, AtDivider } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 
 // npm
@@ -14,7 +14,7 @@ import CustomImage from '@/components/custom-image'
 import Loading from '@/components/loading'
 
 // types
-import dishesRate from '@/types/dishes'
+import { dishesRate } from '@/types/dishes'
 
 type PageStateProps = {}
 

@@ -11,7 +11,15 @@ var commodityRouter = require('./routes/commodity')
 var specialRouter = require('./routes/special')
 var indexRouter = require('./routes/index')
 
+// 引入express-ws包
+var expressWs = require('express-ws');
+// 创建express初始化对象app
 var app = express();
+// 将app绑定expressWs方法
+expressWs(app)
+// 引用编写连接方法的路由路径
+var submitMenuRouter = require('./routes/submitMenu')
+
 
 app.all('*', (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -30,6 +38,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// 将路由绑定到express对象上
+app.use('/submitMenu', submitMenuRouter)
+
 
 app.use('/', indexRouter);
 app.use('/user', userRouter)

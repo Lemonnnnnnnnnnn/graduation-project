@@ -72,6 +72,7 @@
 
 <script>
 import axios from "axios";
+import { targetUrl } from "../constants/request";
 export default {
   data() {
     return {
@@ -87,9 +88,7 @@ export default {
       var pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
       pattern.test(this.inputMailAddress)
         ? axios
-            .get(
-              `http://localhost:3001/user/sendMail?address=${this.inputMailAddress}`
-            )
+            .get(`${targetUrl}/user/sendMail?address=${this.inputMailAddress}`)
             .then(res => {
               if (res.status === 200) {
                 window.localStorage.setItem("returnCode", res.data);
@@ -128,7 +127,7 @@ export default {
 
       this.onCheck()
         ? axios({
-            url: "http://localhost:3001/user/register",
+            url: `${targetUrl}/user/register`,
             method: "post",
             data,
             headers: {
@@ -187,7 +186,7 @@ export default {
   min-width: 1000px;
   z-index: -10;
 
-  background-image: url("http://www.linyuchen-pic.xyz/images/2020/03/14/95j6mk.jpg");
+  background-image: url("https://tse3-mm.cn.bing.net/th/id/OIP.16-xGqdRH5CtbAdOJG2GLwHaEK?w=300&h=168&c=7&o=5&dpr=1.25&pid=1.7");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center 0;
