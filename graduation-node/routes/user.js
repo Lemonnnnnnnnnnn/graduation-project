@@ -74,13 +74,20 @@ router.post('/login', function (req, res, next) {
 
     req.on('data', async data => {
         let queryTable = `db.collection("adminTable").where(${data}).get()`
-        let { data: dataTable } = await databaseQuery(access_token, queryTable).catch(e => console.log(e))
-        if (dataTable && dataTable.length) {
-            res.send('登录成功')
-        } else {
-            res.status(203)
-            res.send('账号或密码错误')
-        }
+        databaseQuery(access_token, queryTable)
+            .then((result) => {
+                if (result.errcode === 0) {
+                    const { data: dataTable } = result
+                    if (dataTable && dataTable.length) {
+                        res.send('登录成功')
+                    } else {
+                        res.status(203)
+                        res.send('账号或密码错误')
+                    }
+                }
+            })
+            .catch(e => console.log(e))
+
     })
 })
 

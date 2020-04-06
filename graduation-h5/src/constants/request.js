@@ -3,7 +3,7 @@ const prod = 'https://www.linyuchen.xyz'
 const devWs = 'ws://localhost:3000'
 const prodWs = 'wss://www.linyuchen.xyz'
 
-const current = 'prod'
+const current = 'dev'
 let targetUrl = ''
 let targetWs = ''
 

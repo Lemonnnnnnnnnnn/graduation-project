@@ -13,20 +13,16 @@ function databaseQuery(access_token, query) {
         }
         const url = `https://api.weixin.qq.com/tcb/databasequery?access_token=${access_token}`
         // 分别处理查到信息和没有查到信息的情况
-        
+
         let { data } = await axios.post(url, params)
         switch (data.errcode) {
             // 如果成功获取,将结果抛出
             case 0: {
                 resolve(data)
             } break
-            // 如果access_token过期,执行获取access_token的函数,并将重新请求的结果抛出
-            case 40001: {
-                const newToken = await getToken()
-                resolve(databaseAdd(newToken, query))
-            } break
             default: {
-                reject(data)
+                const newToken = await getToken()
+                resolve(databaseQuery(newToken, query))
             }
         }
     })
@@ -46,12 +42,10 @@ function databaseAdd(access_token, query) {
             case 0: {
                 resolve(data)
             } break
-            case 40001: {
+
+            default: {
                 const newToken = await getToken()
                 resolve(databaseAdd(newToken, query))
-            } break
-            default: {
-                reject(data)
             }
         }
 
@@ -65,9 +59,17 @@ function databaseDelete(access_token, query) {
             query
         }
         const url = `https://api.weixin.qq.com/tcb/databasedelete?access_token=${access_token}`
-        let { data } = await axios.post(url, params)
 
-        resolve(data)
+        const { data } = await axios.post(url, params)
+        switch (data.errcode) {
+            case 0: {
+                resolve(data)
+            } break
+            default: {
+                const newToken = await getToken()
+                resolve(databaseDelete(newToken, query))
+            }
+        }
     })
 }
 // 更新记录
@@ -78,9 +80,17 @@ function databaseUpdate(access_token, query) {
             query
         }
         const url = `https://api.weixin.qq.com/tcb/databaseupdate?access_token=${access_token}`
-        let { data } = await axios.post(url, params)
 
-        resolve(data)
+        const { data } = await axios.post(url, params)
+        switch (data.errcode) {
+            case 0: {
+                resolve(data)
+            } break
+            default: {
+                const newToken = await getToken()
+                resolve(databaseUpdate(newToken, query))
+            }
+        }
     })
 }
 
@@ -98,15 +108,11 @@ function databaseCollectionAdd(access_token, collection_name) {
             case 0: {
                 resolve(data)
             } break
-            case 40001: {
-                const newToken = await getToken()
-                resolve(databasecollectionadd(newToken, collection_name))
-            } break
             default: {
-                reject(data)
+                const newToken = await getToken()
+                resolve(databaseCollectionAdd(newToken, query))
             }
         }
-
     })
 }
 
@@ -118,9 +124,17 @@ function databaseCollectionDelete(access_token, collection_name) {
             collection_name
         }
         const url = `https://api.weixin.qq.com/tcb/databasecollectiondelete?access_token=${access_token}`
-        let { data } = await axios.post(url, params)
 
-        resolve(data)
+        const { data } = await axios.post(url, params)
+        switch (data.errcode) {
+            case 0: {
+                resolve(data)
+            } break
+            default: {
+                const newToken = await getToken()
+                resolve(databaseCollectionDelete(newToken, query))
+            }
+        }
     })
 }
 
