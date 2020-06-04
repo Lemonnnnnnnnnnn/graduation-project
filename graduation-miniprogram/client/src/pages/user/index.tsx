@@ -62,6 +62,11 @@ class User extends Component {
     })
   }
 
+  onLogout() {
+    Taro.clearStorageSync()
+    this.componentDidShow()
+  }
+
 
   render() {
     const { avatarUrl, nickName, integral, isLogin } = this.state
@@ -95,7 +100,7 @@ class User extends Component {
               </Board>
             </View>
 
-            <AtButton type='secondary' className='mt-4' circle onClick={() => Taro.clearStorageSync()}>退出登录</AtButton>
+            <AtButton type='secondary' className='mt-4' circle onClick={() => this.onLogout()}>退出登录</AtButton>
           </View>
         }
         {!isLogin && <AtButton type='primary' onClick={() => Taro.navigateTo({ url: PAGE_AUTH })} circle>登录</AtButton>}

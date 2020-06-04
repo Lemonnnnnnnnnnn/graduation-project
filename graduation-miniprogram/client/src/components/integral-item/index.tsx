@@ -84,7 +84,9 @@ class IntegralItem extends Component {
     let { payload } = this.state
     const { tableID, OPENID } = Taro.getStorageSync('user_info')
     payload = { ...payload, ...params }
-
+    
+    const dev = 'http://localhost:3000'
+    const prod = 'https://www.linyuchen.club'
 
     Taro.cloud.callFunction({
       name: 'submitIntegralOrder',
@@ -97,12 +99,20 @@ class IntegralItem extends Component {
       }
     }).then(() => {
       Taro.showToast({ icon: 'none', title: '您的订单已提交,请耐心等待' })
+      Taro.request({
+        url: `${prod}/submitMenu`,
+        data: {},
+        method: 'POST',
+        success: (res) => { console.log(res) },
+        fail: () => { console.log('失败') }
+      })
     })
   }
 
   onConfirmBtn(scores: number) {
     const { existConfigMask } = this.state
     const { integral } = this.props
+
     if (existConfigMask) {
       this.setState({ showConfigMask: true })
     } else {
@@ -112,6 +122,7 @@ class IntegralItem extends Component {
           if (confirm) {
             if (scores <= integral) {
               this.ondispatchPayload()
+
             } else {
               Taro.showToast({ icon: 'none', title: '积分不足' })
             }

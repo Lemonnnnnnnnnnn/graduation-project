@@ -95,7 +95,7 @@ class ShoppingCar extends Component {
     const { tableID, OPENID } = Taro.getStorageSync('user_info')
 
     const dev = 'http://localhost:3000'
-    const prod = 'https://www.linyuchen.xyz'
+    const prod = 'https://www.linyuchen.club'
 
     Taro.cloud.callFunction({
       name: 'submitMenu',
@@ -107,7 +107,8 @@ class ShoppingCar extends Component {
         timePart: dayjs().format('HH:mm'),
         timeComplete: dayjs().format('YYYY-MM-DD HH:mm:ss')
       }
-    }).then(() => {
+    }).then((res) => {
+      console.log(res)
       Taro.showToast({ icon: 'none', title: '订单已提交，请耐心等待' })
       this.props.dispatchClearCar()
       this.setState({ total: 0, showLoginMask: false })
@@ -129,7 +130,7 @@ class ShoppingCar extends Component {
     return (
       <View >
         {/* 提示登录弹窗 */}
-        {showLoginMask && <LoginMask onSubmitMenu={this.onSubmitMenu} onCloseLoginMask={this.onCloseLoginMask.bind(this)} />}
+        {showLoginMask && <LoginMask onSubmitMenu={this.onSubmitMenu.bind(this)} onCloseLoginMask={this.onCloseLoginMask.bind(this)} />}
         <Decorate shadow='gray--1' height='150' borderRadius='normal' />
 
         <View className='m-3'>

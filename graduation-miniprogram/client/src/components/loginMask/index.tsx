@@ -42,6 +42,10 @@ class LoginMask extends Component {
 
     componentDidHide() { }
 
+    onSubmitMenu(){
+        this.props.onSubmitMenu()
+    }
+
     render() {
         return (<View >
             <View className='vertical-level-center p-3 text-center' style={{
@@ -54,7 +58,7 @@ class LoginMask extends Component {
             }}>
                 <View className='text-large text-secondary'>登录后可积累积分免费换取菜品哦</View>
                 <AtButton className='mt-3' size='small' type='primary' circle onClick={() => Taro.navigateTo({ url: PAGE_AUTH })}>登录</AtButton>
-                <AtButton className='mt-3' size='small' type='secondary' circle onClick={() => this.props.onSubmitMenu}>直接提交</AtButton>
+                <AtButton className='mt-3' size='small' type='secondary' circle onClick={this.onSubmitMenu.bind(this)}>直接提交</AtButton>
             </View>
             <Mask show onClick={this.props.onCloseLoginMask} />
         </View>

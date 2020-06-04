@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
 
     average = (average * (rate.length - 1) + rateBadge) / rate.length
 
-    db.collection('Dishes').doc(id).update({
+    await db.collection('Dishes').doc(id).update({
         data: { rate, average }
     }).then(() => {
         return rate
